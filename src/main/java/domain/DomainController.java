@@ -16,11 +16,16 @@ public class DomainController {
         return eRepo.getEventList().stream().sorted(Comparator.comparing(Event::getDate)).toList();
     }
 
-    public void addEvent(String title, String date, String startTime, String endTime) {
-        LocalDate localDate = eRepo.makeDate(date);
-        LocalTime startHour = eRepo.makeHour(startTime);
-        LocalTime endHour = eRepo.makeHour(endTime);
-        eRepo.addEvent(new Event(title, localDate, startHour, endHour));
+    public LocalDate validateDate(String date) {
+        return eRepo.validateDate(date);
+    }
+
+    public LocalTime validateHour(String hour) {
+        return eRepo.validateHour(hour);
+    }
+
+    public void addEvent(String title, LocalDate date, LocalTime startHour, LocalTime endHour) {
+        eRepo.addEvent(new Event(title, date, startHour, endHour));
     }
 
     public void addDescription(String description) {

@@ -30,22 +30,24 @@ public class EventRepo {
         eventList.add(event);
     }
 
-    public LocalDate makeDate(String date) {
-        if (!date.matches("^[1-9]([0-9])[-/][1-9]([0-9])[-/][1-9][0-9]([0-9]{2})"))
+    public LocalDate validateDate(String date) {
+        if (!date.matches("^[1-9]([0-9])?[-/][1-9]([0-9])?[-/]'?[1-9][0-9]([0-9]{2})?"))
+//        if (!date.matches("^\\d+[-/]\\d+[-/]\\d+"))
             throw new IllegalArgumentException("Not a valid date. (Month/day/year)");
         String[] split = date.split("[-/]");
-        int month = parseInt(split[1]);
-        int day = parseInt(split[2]);
-        int year = parseInt(split[3]);
-        return LocalDate.of(month, day, year);
+        int month = parseInt(split[0]);
+        int day = parseInt(split[1]);
+        int year = parseInt(split[2]);
+        return LocalDate.of(year, month, day);
     }
 
-    public LocalTime makeHour(String hourString) {
-        if (!hourString.matches("^[1-9]([0-9])[hH]([0-9])[1-9]"))
+    public LocalTime validateHour(String hourString) {
+        if (!hourString.matches("^[1-9]([0-9])?[hH][0-9][1-9]?"))
+//        if (!hourString.matches("^\\d(\\d)?[hH]\\d(\\d)?"))
             throw new IllegalArgumentException("Not a valid hour. (__h__)");
         String[] split = hourString.split("[hH]");
-        int hour = parseInt(split[1]);
-        int minutes = parseInt(split[2]);
+        int hour = parseInt(split[0]);
+        int minutes = parseInt(split[1]);
         return LocalTime.of(hour, minutes);
     }
 }

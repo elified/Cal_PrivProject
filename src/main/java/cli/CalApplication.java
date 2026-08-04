@@ -4,6 +4,7 @@ import domain.DomainController;
 import domain.Event;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -19,7 +20,7 @@ public class CalApplication {
     public void start() {
         boolean stop = false;
         int min = 1;
-        int max = 2;
+        int max = 3;
         do {
             try {
                 System.out.println("1. make event.");
@@ -27,33 +28,53 @@ public class CalApplication {
                 System.out.println("3. stop the program.");
                 System.out.print("=> ");
                 int choice = parseInt(input.next());
-                if (choice < 1 || choice > 3)
-                    throw new IllegalArgumentException(String.format("pls choose a number between %d and %d", min, max));
+                if (choice < min || choice > max)
+                    throw new IllegalArgumentException(String.format("pls choose a number between %d and %d.%n%n", min, max));
                 if (choice == 1)
                     makeEvent();
                 if (choice == 2)
                     showAllEvents();
                 if (choice == 3)
                     stop = true;
+            } catch (NumberFormatException exception) {
+                System.out.printf("pls choose a number between %d and %d, not a letter.%n%n", min, max);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+                System.out.println();
             }
         } while (!stop);
+        System.out.println("Bye bye!");
     }
 
     private void makeEvent() {
-        System.out.print("\nTitle: ");
-        String title = input.next();
-        System.out.printf("%nToday's date = %d/%d/%4d%nDate (MM/DD/YYYY): ",
-                LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth(), LocalDate.now().getYear());
-        String date = input.next();
-        System.out.print("\bStart hour\n(__h__): ");
-        String startHour = input.next();
-        System.out.print("\nEnd hour\n(__h__): ");
-        String endHour = input.next();
-        System.out.println();
-        if (choice("description"))
-            addDescription();
+        boolean valid = false;
+        do {
+            try {
+                System.out.print("\nTitle: ");
+                String title = input.next();
+                System.out.println();
+                System.out.printf("Today's date = %d/%d/%4d%nDate (MM/DD/YYYY): ",
+                        LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth(), LocalDate.now().getYear());
+                String date = input.next();
+                LocalDate localDate = dc.validateDate(date);
+                System.out.println();
+                System.out.print("Start hour\n(__h__): ");
+                String startTime = input.next();
+                LocalTime startHour = dc.validateHour(startTime);
+                System.out.println();
+                System.out.print("End hour\n(__h__): ");
+                String endTime = input.next();
+                LocalTime endHour = dc.validateHour(endTime);
+                System.out.println();
+                dc.addEvent(title, localDate, startHour, endHour);
+                if (choice("description"))
+                    addDescription();
+                valid = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        } while (!valid);
+
     }
 
     private void addDescription() {
@@ -71,8 +92,10 @@ public class CalApplication {
     }
 
     private void showAllEvents() {
+        System.out.println();
         for (Event event : dc.giveAllEventsSortedByDate()) {
             System.out.println(event);
         }
+        System.out.println();
     }
 }
