@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class Event {
+    private static final LocalDate MAXDATE = LocalDate.of(LocalDate.now().getYear() + 100, 12, 31);
+    private static final LocalDate MINDATE = LocalDate.of(1900, 1, 1);
     private String title;
     private LocalDate date;
     private LocalTime startHour;
@@ -51,6 +53,10 @@ public class Event {
     }
 
     public void setDate(LocalDate date) {
+        if (date.isBefore(MINDATE) || date.isAfter(MAXDATE))
+            throw new IllegalArgumentException(String.format("Choose a date between %2d/%d/%4d and %2d/%d/%4d",
+                    MINDATE.getDayOfMonth(), MINDATE.getMonthValue(), MINDATE.getYear(),
+                    MAXDATE.getDayOfMonth(), MAXDATE.getMonthValue(), MAXDATE.getYear()));
         this.date = date;
     }
 

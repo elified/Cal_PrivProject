@@ -27,7 +27,15 @@ public class EventRepo {
     }
 
     public void addEvent(Event event) {
+        checkForDuplicates(event);
         eventList.add(event);
+    }
+
+    private void checkForDuplicates(Event newEvent) {
+        for (Event event : eventList) {
+            if (event.equals(newEvent))
+                throw new IllegalArgumentException("This event already exists");
+        }
     }
 
     public LocalDate validateDate(String date) {
