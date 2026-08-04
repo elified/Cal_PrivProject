@@ -14,7 +14,7 @@ public class TestEvent {
     private final static LocalDate VALIDDATE = LocalDate.now();
     private final static String VALIDTITLE = "Test title";
     private final static LocalTime VALIDSTARTHOUR = LocalTime.of(11, 0);
-    private final static LocalTime VALIDENDHOUR = LocalTime.of(11, 30);
+    private final static LocalTime VALIDENDHOUR = LocalTime.of(23, 30);
 
     @ParameterizedTest
     @ValueSource(strings = {"", "      "})
@@ -48,39 +48,20 @@ public class TestEvent {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {-5, -1, 25, 27})
-    @DisplayName("invalid start hours : throws exception")
-    void constructor_invalidStartHour_ThrowsException(int hour) {
-        LocalTime testStartHour = LocalTime.of(hour, 0);
-        assertThrows(IllegalArgumentException.class, () -> new Event(VALIDTITLE, VALIDDATE, testStartHour, VALIDENDHOUR));
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {0, 10, 24})
-    @DisplayName("valid start hours : makes event")
-    void constructor_validStartHour_makesEvent(int hour) {
-        LocalTime testStartHour = LocalTime.of(hour, 59);
-        Event event = new Event(VALIDTITLE, VALIDDATE, testStartHour, VALIDENDHOUR);
-        assertEquals(testStartHour, event.getStartHour());
-    }
-
-    // TODO
-    @ParameterizedTest
-    @ValueSource(ints = {-5, -1, 25, 27})
-    @DisplayName("invalid start hours : throws exception")
+    @ValueSource(ints = {9, 11})
+    @DisplayName("invalid end hours : throws exception")
     void constructor_invalidEndHour_ThrowsException(int hour) {
-        LocalTime testStartHour = LocalTime.of(hour, 0);
-        assertThrows(IllegalArgumentException.class, () -> new Event(VALIDTITLE, VALIDDATE, testStartHour, VALIDENDHOUR));
+        LocalTime testEndHour = LocalTime.of(hour, 0);
+        assertThrows(IllegalArgumentException.class, () -> new Event(VALIDTITLE, VALIDDATE, VALIDSTARTHOUR, testEndHour));
     }
 
-    // TODO
     @ParameterizedTest
-    @ValueSource(ints = {0, 10, 24})
-    @DisplayName("valid start hours : makes event")
+    @ValueSource(ints = {12, 17, 23})
+    @DisplayName("valid end hours : makes event")
     void constructor_validEndHour_makesEvent(int hour) {
-        LocalTime testStartHour = LocalTime.of(hour, 59);
-        Event event = new Event(VALIDTITLE, VALIDDATE, testStartHour, VALIDENDHOUR);
-        assertEquals(testStartHour, event.getStartHour());
+        LocalTime testEndHour = LocalTime.of(hour, 59);
+        Event event = new Event(VALIDTITLE, VALIDDATE, VALIDSTARTHOUR, testEndHour);
+        assertEquals(testEndHour, event.getEndHour());
     }
 }
 
