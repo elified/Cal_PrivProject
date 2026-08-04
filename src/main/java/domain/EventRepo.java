@@ -37,12 +37,15 @@ public class EventRepo {
         String[] split = date.split("[-/]");
         int month = parseInt(split[0]);
         int day = parseInt(split[1]);
+        if (split[2].startsWith("'")) {
+            split[2] = String.valueOf(LocalDate.now().getYear()).substring(0, 2) + split[2].substring(1);
+        }
         int year = parseInt(split[2]);
         return LocalDate.of(year, month, day);
     }
 
     public LocalTime validateHour(String hourString) {
-        if (!hourString.matches("^[1-9]([0-9])?[hH][0-9][1-9]?"))
+        if (!hourString.matches("^[1-9]([0-9])?[hH][0-9][0-9]?"))
 //        if (!hourString.matches("^\\d(\\d)?[hH]\\d(\\d)?"))
             throw new IllegalArgumentException("Not a valid hour. (__h__)");
         String[] split = hourString.split("[hH]");

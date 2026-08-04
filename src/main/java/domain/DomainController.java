@@ -16,6 +16,12 @@ public class DomainController {
         return eRepo.getEventList().stream().sorted(Comparator.comparing(Event::getDate)).toList();
     }
 
+    public String validateTitle(String title) {
+        if (title == null || title.isBlank())
+            throw new IllegalArgumentException("Title can't be left blank.");
+        return title;
+    }
+
     public LocalDate validateDate(String date) {
         return eRepo.validateDate(date);
     }

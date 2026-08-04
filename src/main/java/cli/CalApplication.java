@@ -27,7 +27,7 @@ public class CalApplication {
                 System.out.println("2. show all events.");
                 System.out.println("3. stop the program.");
                 System.out.print("=> ");
-                int choice = parseInt(input.next());
+                int choice = parseInt(input.nextLine());
                 if (choice < min || choice > max)
                     throw new IllegalArgumentException(String.format("pls choose a number between %d and %d.%n%n", min, max));
                 if (choice == 1)
@@ -43,7 +43,7 @@ public class CalApplication {
                 System.out.println();
             }
         } while (!stop);
-        System.out.println("Bye bye!");
+        System.out.printf("%nBye bye!");
     }
 
     private void makeEvent() {
@@ -51,20 +51,17 @@ public class CalApplication {
         do {
             try {
                 System.out.print("\nTitle: ");
-                String title = input.next();
+                String title = dc.validateTitle(input.nextLine());
                 System.out.println();
                 System.out.printf("Today's date = %d/%d/%4d%nDate (MM/DD/YYYY): ",
                         LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth(), LocalDate.now().getYear());
-                String date = input.next();
-                LocalDate localDate = dc.validateDate(date);
+                LocalDate localDate = dc.validateDate(input.nextLine());
                 System.out.println();
-                System.out.print("Start hour\n(__h__): ");
-                String startTime = input.next();
-                LocalTime startHour = dc.validateHour(startTime);
+                System.out.printf("Start hour%n(__h__): ");
+                LocalTime startHour = dc.validateHour(input.nextLine());
                 System.out.println();
-                System.out.print("End hour\n(__h__): ");
-                String endTime = input.next();
-                LocalTime endHour = dc.validateHour(endTime);
+                System.out.printf("End hour%n(__h__): ");
+                LocalTime endHour = dc.validateHour(input.nextLine());
                 System.out.println();
                 dc.addEvent(title, localDate, startHour, endHour);
                 if (choice("description"))
@@ -78,13 +75,15 @@ public class CalApplication {
     }
 
     private void addDescription() {
-        String description = input.next();
+        System.out.printf("Your description: %n");
+        String description = input.nextLine();
+        System.out.println();
         dc.addDescription(description);
     }
 
     private boolean choice(String thingToAdd) {
         System.out.printf("Do you want to add %s%n(Y/N)=> ", thingToAdd);
-        String choice = input.next();
+        String choice = input.nextLine();
         System.out.println();
         if (!choice.matches("^[yYnN]"))
             throw new IllegalArgumentException("not valid choice only Y for yes or N for no");

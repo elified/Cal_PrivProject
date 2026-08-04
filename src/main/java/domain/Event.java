@@ -2,6 +2,7 @@ package domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Event {
     private String title;
@@ -30,9 +31,22 @@ public class Event {
                 this.endHour.getMinute(), this.description);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Objects.equals(title, event.title) && Objects.equals(date, event.date) && Objects.equals(startHour, event.startHour) && Objects.equals(endHour, event.endHour);
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, date, startHour, endHour);
+    }
+
     public void setTitle(String title) {
         if (title == null || title.isBlank())
-            throw new IllegalArgumentException("Title Can't be left blank");
+            throw new IllegalArgumentException("Title can't be blank");
         this.title = title;
     }
 
@@ -45,10 +59,16 @@ public class Event {
     }
 
     public void setEndHour(LocalTime endHour) {
+        if (endHour.isBefore(this.startHour))
+            throw new IllegalArgumentException("End hour can't be before the start hour.");
+        if (endHour.equals(startHour))
+            throw new IllegalArgumentException("End hour can't be at the exact same time as the start hour.");
         this.endHour = endHour;
     }
 
     public void setDescription(String description) {
+        if (description == null || description.isBlank())
+            description = "No description";
         this.description = description;
     }
 
