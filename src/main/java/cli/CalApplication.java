@@ -11,7 +11,8 @@ import static java.lang.Integer.parseInt;
 
 public class CalApplication {
     private final Scanner input = new Scanner(System.in);
-    private DomainController dc;
+    private final DomainController dc;
+    private boolean showSummery = true;
 
     public CalApplication(DomainController dc) {
         this.dc = dc;
@@ -23,24 +24,27 @@ public class CalApplication {
         int max = 4;
         do {
             try {
-                System.out.println("1. make event for today.");
-                System.out.println("2. make custom event.");
-                System.out.println("3. show all events.");
-                System.out.println("4. stop the program.");
+                if (showSummery)
+                    showSummeryEvents();
+                else this.showSummery = true;
+                System.out.printf("%d. make event for today.%n", min);
+                System.out.printf("%d. make custom event.%n", min + 1);
+                System.out.printf("%d. show all events.%n", max - 1);
+                System.out.printf("%d. stop the program.%n", max);
                 System.out.print("=> ");
                 int choice = parseInt(input.nextLine());
                 if (choice < min || choice > max)
-                    throw new IllegalArgumentException(String.format("pls choose a number between %d and %d.%n%n", min, max));
-                if (choice == 1)
+                    throw new IllegalArgumentException(String.format("%npls choose a number between %d and %d.%n", min, max));
+                if (choice == min)
                     makeEvent(true);
-                if (choice == 2)
+                if (choice == min + 1)
                     makeEvent(false);
-                if (choice == 3)
+                if (choice == max - 1)
                     showAllEvents();
-                if (choice == 4)
+                if (choice == max)
                     stop = true;
             } catch (NumberFormatException exception) {
-                System.out.printf("pls choose a number between %d and %d, not a letter.%n%n", min, max);
+                System.out.printf("%npls choose a number between %d and %d, not a letter.%n%n", min, max);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
                 System.out.println();
@@ -70,7 +74,7 @@ public class CalApplication {
                 LocalTime endHour = dc.validateHour(input.nextLine());
                 System.out.println();
                 dc.addEvent(title, localDate, startHour, endHour);
-                if (choice("description"))
+                if (choice())
                     addDescription();
                 valid = true;
             } catch (IllegalArgumentException e) {
@@ -86,8 +90,8 @@ public class CalApplication {
         dc.addDescription(description);
     }
 
-    private boolean choice(String thingToAdd) {
-        System.out.printf("Do you want to add %s%n(Y/N)=> ", thingToAdd);
+    private boolean choice() {
+        System.out.printf("Do you want to add description?%n(Y/N)=> ");
         String choice = input.nextLine();
         System.out.println();
         if (!choice.matches("^[yYnN]"))
@@ -96,9 +100,22 @@ public class CalApplication {
     }
 
     private void showAllEvents() {
+        this.showSummery = false;
         System.out.println();
         for (Event event : dc.giveAllEventsSortedByDate()) {
             System.out.println(event);
+        }
+        System.out.println();
+    }
+
+    private void showSummeryEvents() {
+        System.out.println();
+        int i = 0;
+        for (Event event : dc.giveAllEventsSortedByDate()) {
+            System.out.println(event);
+            i++;
+            if (i >= 5 || i == dc.giveAllEventsSortedByDate().size())
+                break;
         }
         System.out.println();
     }
