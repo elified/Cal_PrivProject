@@ -13,7 +13,8 @@ public class DomainController {
     }
 
     public List<Event> giveAllEventsSortedByDate() {
-        return eRepo.getEventList().stream().sorted(Comparator.comparing(Event::getDate)).toList();
+        return eRepo.getEventList().stream().sorted(Comparator.comparing(Event::getDate)
+                .thenComparing(Event::getStartHour).thenComparing(Event::getEndHour)).toList();
     }
 
     public String validateTitle(String title) {

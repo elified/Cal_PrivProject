@@ -27,7 +27,7 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("Title: %s, Date: %d/%2d/%4d, start hour: %dh%02d, end hour: %dh%02d, description: %s",
+        return String.format("Title: %s, Date: %d/%d/%4d, start hour: %dh%02d, end hour: %dh%02d, description: %s",
                 this.title, this.date.getMonthValue(), this.date.getDayOfMonth(), this.date.getYear(),
                 this.startHour.getHour(), this.startHour.getMinute(), this.endHour.getHour(),
                 this.endHour.getMinute(), this.description);

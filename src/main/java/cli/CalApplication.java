@@ -20,21 +20,24 @@ public class CalApplication {
     public void start() {
         boolean stop = false;
         int min = 1;
-        int max = 3;
+        int max = 4;
         do {
             try {
-                System.out.println("1. make event.");
-                System.out.println("2. show all events.");
-                System.out.println("3. stop the program.");
+                System.out.println("1. make event for today.");
+                System.out.println("2. make custom event.");
+                System.out.println("3. show all events.");
+                System.out.println("4. stop the program.");
                 System.out.print("=> ");
                 int choice = parseInt(input.nextLine());
                 if (choice < min || choice > max)
                     throw new IllegalArgumentException(String.format("pls choose a number between %d and %d.%n%n", min, max));
                 if (choice == 1)
-                    makeEvent();
+                    makeEvent(true);
                 if (choice == 2)
-                    showAllEvents();
+                    makeEvent(false);
                 if (choice == 3)
+                    showAllEvents();
+                if (choice == 4)
                     stop = true;
             } catch (NumberFormatException exception) {
                 System.out.printf("pls choose a number between %d and %d, not a letter.%n%n", min, max);
@@ -46,17 +49,20 @@ public class CalApplication {
         System.out.printf("%nBye bye!");
     }
 
-    private void makeEvent() {
+    private void makeEvent(boolean currentDay) {
         boolean valid = false;
         do {
             try {
                 System.out.print("\nTitle: ");
                 String title = dc.validateTitle(input.nextLine());
                 System.out.println();
-                System.out.printf("Today's date = %d/%d/%4d%nDate (MM/DD/YYYY): ",
-                        LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth(), LocalDate.now().getYear());
-                LocalDate localDate = dc.validateDate(input.nextLine());
-                System.out.println();
+                LocalDate localDate;
+                if (!currentDay) {
+                    System.out.printf("Today's date = %d/%d/%4d%nDate (MM/DD/YYYY): ",
+                            LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth(), LocalDate.now().getYear());
+                    localDate = dc.validateDate(input.nextLine());
+                    System.out.println();
+                } else localDate = LocalDate.now();
                 System.out.printf("Start hour%n(__h__): ");
                 LocalTime startHour = dc.validateHour(input.nextLine());
                 System.out.println();
@@ -71,7 +77,6 @@ public class CalApplication {
                 System.out.println(e.getMessage());
             }
         } while (!valid);
-
     }
 
     private void addDescription() {
