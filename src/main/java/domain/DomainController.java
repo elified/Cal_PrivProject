@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class DomainController {
-    private EventRepo eRepo;
+    private final EventRepo eRepo;
 
     public DomainController() {
         eRepo = new EventRepo();

@@ -1,6 +1,6 @@
 package domain;
 
-import persistentie.EventMapper;
+import Persistence.EventMapper;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -10,12 +10,12 @@ import java.util.List;
 import static java.lang.Integer.parseInt;
 
 public class EventRepo {
-    private EventMapper eventMapper;
+    private final EventMapper eventMapper;
     private List<Event> eventList;
 
     public EventRepo() {
         this.eventMapper = new EventMapper();
-        eventList = new ArrayList<>(eventMapper.getDummyEvents());
+        eventList = new ArrayList<>(eventMapper.giveAllEventsInDB());
     }
 
     public List<Event> getEventList() {
@@ -53,10 +53,10 @@ public class EventRepo {
     }
 
     public LocalTime validateHour(String hourString) {
-        if (!hourString.matches("^[1-9]([0-9])?[hH][0-9][0-9]?"))
+        if (!hourString.matches("^[1-9]([0-9])?:[0-9][0-9]?"))
 //        if (!hourString.matches("^\\d(\\d)?[hH]\\d(\\d)?"))
-            throw new IllegalArgumentException("Not a valid hour. (__h__)");
-        String[] split = hourString.split("[hH]");
+            throw new IllegalArgumentException("Not a valid hour. (__:__)");
+        String[] split = hourString.split(":");
         int hour = parseInt(split[0]);
         int minutes = parseInt(split[1]);
         return LocalTime.of(hour, minutes);

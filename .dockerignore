@@ -60,8 +60,12 @@ pom.xml.tag
 pom.xml.versionsBackup
 release.properties
 replay_pid*
+
 .idea
 README.Docker.md
 *.env
-db
 Starter.iml
+.vscode
+out
+target
+/src/main/java/Persistence/ConnectionDB.java
