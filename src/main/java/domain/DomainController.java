@@ -38,4 +38,8 @@ public class DomainController {
     public void addDescription(String description) {
         eRepo.addDescription(description);
     }
+
+    public void uploadAllNewEvents() {
+        eRepo.uploadAllNewEvents();
+    }
 }

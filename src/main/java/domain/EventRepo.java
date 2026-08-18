@@ -12,10 +12,12 @@ import static java.lang.Integer.parseInt;
 public class EventRepo {
     private final EventMapper eventMapper;
     private List<Event> eventList;
+    private List<Event> newEventsList;
 
     public EventRepo() {
         this.eventMapper = new EventMapper();
         eventList = new ArrayList<>(eventMapper.giveAllEventsInDB());
+        newEventsList = new ArrayList<>();
     }
 
     public List<Event> getEventList() {
@@ -29,6 +31,13 @@ public class EventRepo {
     public void addEvent(Event event) {
         checkForDuplicates(event);
         eventList.add(event);
+        newEventsList.add(event);
+    }
+
+    public void uploadAllNewEvents() {
+        for (Event event : newEventsList) {
+            eventMapper.uploadNewEvent(event);
+        }
     }
 
     private void checkForDuplicates(Event newEvent) {

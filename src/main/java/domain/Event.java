@@ -2,11 +2,10 @@ package domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
 
 public class Event {
-    private static final LocalDate MAXDATE = LocalDate.of(LocalDate.now().getYear() + 100, 12, 31);
-    private static final LocalDate MINDATE = LocalDate.of(1900, 1, 1);
+    private static final LocalDate MAX_DATE = LocalDate.of(LocalDate.now().getYear() + 100, 12, 31);
+    private static final LocalDate MIN_DATE = LocalDate.of(1900, 1, 1);
     private String title;
     private LocalDate date;
     private LocalTime startHour;
@@ -33,18 +32,6 @@ public class Event {
                 this.endHour.getMinute(), this.description);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Event event = (Event) o;
-        return Objects.equals(title, event.title) && Objects.equals(date, event.date) && Objects.equals(startHour, event.startHour) && Objects.equals(endHour, event.endHour);
-    }
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, date, startHour, endHour);
-    }
 
     public void setTitle(String title) {
         if (title == null || title.isBlank())
@@ -53,10 +40,10 @@ public class Event {
     }
 
     public void setDate(LocalDate date) {
-        if (date.isBefore(MINDATE) || date.isAfter(MAXDATE))
+        if (date.isBefore(MIN_DATE) || date.isAfter(MAX_DATE))
             throw new IllegalArgumentException(String.format("Choose a date between %2d/%d/%4d and %2d/%d/%4d",
-                    MINDATE.getDayOfMonth(), MINDATE.getMonthValue(), MINDATE.getYear(),
-                    MAXDATE.getDayOfMonth(), MAXDATE.getMonthValue(), MAXDATE.getYear()));
+                    MIN_DATE.getDayOfMonth(), MIN_DATE.getMonthValue(), MIN_DATE.getYear(),
+                    MAX_DATE.getDayOfMonth(), MAX_DATE.getMonthValue(), MAX_DATE.getYear()));
         this.date = date;
     }
 

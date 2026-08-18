@@ -50,6 +50,7 @@ public class CalApplication {
                 System.out.println();
             }
         } while (!stop);
+        dc.uploadAllNewEvents();
         System.out.printf("%nBye bye!");
     }
 
