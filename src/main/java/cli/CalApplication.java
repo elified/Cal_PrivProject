@@ -50,16 +50,23 @@ public class CalApplication {
                 System.out.println();
             }
         } while (!stop);
-        dc.uploadAllNewEvents();
         System.out.printf("%nBye bye!");
     }
 
+    /**
+     * goes through the variables needed to make an event, description is optional
+     *
+     * @param currentDay depending on if the user chose 1 or 2 in the start() it's true or false
+     */
     private void makeEvent(boolean currentDay) {
         boolean valid = false;
         do {
             try {
-                System.out.print("\nTitle: ");
-                String title = dc.validateTitle(input.nextLine());
+                System.out.print("\nType \\ to return to the menu.\nTitle: ");
+                String title = input.nextLine();
+                if (title.startsWith("\\"))
+                    return;
+                dc.validateTitle(title);
                 System.out.println();
                 LocalDate localDate;
                 if (!currentDay) {
@@ -68,10 +75,10 @@ public class CalApplication {
                     localDate = dc.validateDate(input.nextLine());
                     System.out.println();
                 } else localDate = LocalDate.now();
-                System.out.printf("Start hour%n(__h__): ");
+                System.out.printf("Start hour%n(__:__): ");
                 LocalTime startHour = dc.validateHour(input.nextLine());
                 System.out.println();
-                System.out.printf("End hour%n(__h__): ");
+                System.out.printf("End hour%n(__:__): ");
                 LocalTime endHour = dc.validateHour(input.nextLine());
                 System.out.println();
                 dc.addEvent(title, localDate, startHour, endHour);
@@ -84,6 +91,10 @@ public class CalApplication {
         } while (!valid);
     }
 
+    /**
+     * adds the description by taking the last added event and attaching the description
+     * since the last made event is always the one the user just made
+     */
     private void addDescription() {
         System.out.printf("Your description: %n");
         String description = input.nextLine();
@@ -100,6 +111,10 @@ public class CalApplication {
         return choice.matches("^[yY]");
     }
 
+    /**
+     * prints out all the events we have locally stored sorted by date and
+     * prints them on the screen using the toString() methods of the class Event
+     */
     private void showAllEvents() {
         this.showSummery = false;
         System.out.println();
@@ -109,6 +124,10 @@ public class CalApplication {
         System.out.println();
     }
 
+    /**
+     * prints out the first five events in the locally saved event list sorted by date
+     * (i know there is probably a cleaner way to do this but this worked for me and i'm not gone change it (for now))
+     */
     private void showSummeryEvents() {
         System.out.println();
         int i = 0;

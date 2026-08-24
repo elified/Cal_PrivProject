@@ -5,7 +5,8 @@ import java.time.LocalTime;
 
 public class Event {
     private static final LocalDate MAX_DATE = LocalDate.of(LocalDate.now().getYear() + 100, 12, 31);
-    private static final LocalDate MIN_DATE = LocalDate.of(1900, 1, 1);
+    private static final LocalDate MIN_DATE = LocalDate.of((LocalDate.now().getYear() / 100 - 1) * 100, 1, 1);
+    private int id;
     private String title;
     private LocalDate date;
     private LocalTime startHour;
@@ -17,6 +18,11 @@ public class Event {
     }
 
     public Event(String title, LocalDate date, LocalTime startHour, LocalTime endHour, String description) {
+        this(0, title, date, startHour, endHour, description);
+    }
+
+    public Event(int id, String title, LocalDate date, LocalTime startHour, LocalTime endHour, String description) {
+        setId(id);
         setTitle(title);
         setDate(date);
         setStartHour(startHour);
@@ -26,12 +32,15 @@ public class Event {
 
     @Override
     public String toString() {
-        return String.format("Title: %s, Date: %d/%d/%4d, start hour: %dh%02d, end hour: %dh%02d, description: %s",
-                this.title, this.date.getMonthValue(), this.date.getDayOfMonth(), this.date.getYear(),
+        return String.format("ID: %d, Title: %s, Date: %d/%d/%4d, start hour: %d:%02d, end hour: %d:%02d, description: %s",
+                this.id, this.title, this.date.getMonthValue(), this.date.getDayOfMonth(), this.date.getYear(),
                 this.startHour.getHour(), this.startHour.getMinute(), this.endHour.getHour(),
                 this.endHour.getMinute(), this.description);
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setTitle(String title) {
         if (title == null || title.isBlank())

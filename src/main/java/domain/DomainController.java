@@ -35,11 +35,11 @@ public class DomainController {
         eRepo.addEvent(new Event(title, date, startHour, endHour));
     }
 
+//    public void addEvent(String title, LocalDate date, LocalTime startHour, LocalTime endHour, String description) {
+//        eRepo.addEvent(new Event(title, date, startHour, endHour, description));
+//    }
+
     public void addDescription(String description) {
         eRepo.addDescription(description);
-    }
-
-    public void uploadAllNewEvents() {
-        eRepo.uploadAllNewEvents();
     }
 }
