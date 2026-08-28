@@ -68,4 +68,3 @@ Starter.iml
 .vscode
 out
 target
-/src/main/java/Persistence/ConnectionDB.java

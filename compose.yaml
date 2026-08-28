@@ -5,24 +5,25 @@ services:
       context: .
     env_file:
       - .env
-    ports:
-      - "8080:8080"
+    stdin_open: true
+    tty: true
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: calendar
-      DB_USER: ${DB_USER:-root}
-      DB_PWD: ${DB_PWD:-password}
+      DB_USER: ${DB_USER}
+      DB_PWD: ${DB_PWD}
     depends_on:
       mysql:
         condition: service_healthy
 
+  # to run only mysql type `docker compose up -d mysql`
   mysql:
     image: mysql:8.0
     restart: always
     environment:
       MYSQL_DATABASE: calendar
-      MYSQL_ROOT_PASSWORD: ${DB_PWD:-password}
+      MYSQL_ROOT_PASSWORD: ${DB_PWD}
     ports:
       - "3306:3306"
     volumes:
@@ -37,7 +38,7 @@ services:
           "-h",
           "localhost",
           "-uroot",
-          "-p${DB_PWD:-password}",
+          "-p${DB_PWD}",
         ]
       interval: 10s
       timeout: 5s
