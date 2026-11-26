@@ -1,0 +1,38 @@
+.main-scene {
+    -fx-alignment: center;
+}
+
+.event-scene {
+    -fx-alignment: center;
+}
+
+.root-background {
+    -fx-background-color: rgb(221, 221, 221);
+}
+
+.root-font {
+    -fx-font-family: "JetBrains Mono", "ui-sans-serif";
+}
+
+.title {
+    -fx-font-size: 30px;
+    -fx-font-family: "JetBrains Mono", "ui-sans-serif";
+}
+
+.text-field {
+    -fx-max-width: 250px;
+}
+
+.date-picker {
+    -fx-max-width: 150px;
+}
+
+.button {
+    -fx-background-color: #4b99d2;
+    -fx-font-style: black;
+}
+
+.reversed-button {
+    -fx-background-color: black;
+    -fx-font-style: #4b99d2;
+}

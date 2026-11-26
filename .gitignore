@@ -24,3 +24,10 @@ hs_err_pid*
 replay_pid*
 
 .idea
+README.Docker.md
+*.env
+Starter.iml
+.vscode
+out
+target
+/src/main/java/Persistence/ConnectionDB.java

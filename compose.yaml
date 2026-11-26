@@ -1,0 +1,48 @@
+# yes I used AI for this don't judge me
+services:
+  app:
+    build:
+      context: .
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: calendar
+      DB_USER: ${DB_USER}
+      DB_PWD: ${DB_PWD}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # to run only mysql type `docker compose up -d mysql`
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: calendar
+      MYSQL_ROOT_PASSWORD: ${DB_PWD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-p${DB_PWD}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:
